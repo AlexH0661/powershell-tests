@@ -1,11 +1,10 @@
 # To do list
 
-1. Capture CTRL+C on the log server, close connections and exit
-2. Global hashtable that log entries get appended to
+1. Global hashtable that log entries get appended to
     1. At startup try and ingest metrics.json
     2. Append additional entries to the global hash
     3. Dump global hash into metrics.json periodically
-3. Create additional tests
+2. Create additional tests
 
 ## Additional Tests
 1. VLC UDP unicast
