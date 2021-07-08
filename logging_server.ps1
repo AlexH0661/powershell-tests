@@ -53,4 +53,4 @@ Function Receive-TCPMessage {
 }
 
 write-host("Starting log server")
-$tcpListener = Receive-TCPMessage -Port 8443
+Receive-TCPMessage -Port 8443
