@@ -18,6 +18,9 @@ powershell.exe Set-Item wsman:\localhost\Client\TrustedHosts -Value "172.25.0.13
 3. Trusted host might need to be added
 
 ## Run a test
+**Note:**
+The keylogger test will be flagged by an running antimalware/antivirus.
+This is by design and should be accounted for when running that test.
 
 ### Screen Share test
 

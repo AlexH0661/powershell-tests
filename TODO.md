@@ -7,10 +7,9 @@
 2. Create additional tests
 
 ## Additional Tests
-1. Powershell based key logger
-2. Visual Basic macro
+1. Visual Basic macro
     1. Send log server message about who opened file, datetime stamp, etc
     2. Kill switch
         1. subnet
         2. datetime range
-3. Copy files from SharePoint using Powershell
+2. Copy files from SharePoint using Powershell
