@@ -17,14 +17,9 @@ powershell.exe Set-Item wsman:\localhost\Client\TrustedHosts -Value "172.25.0.13
 2. The network profile will also need to be either `domain` or `private`
 3. Trusted host might need to be added
 
-## Run a test
-**Note:**
-The keylogger test will be flagged by an running antimalware/antivirus.
-This is by design and should be accounted for when running that test.
+## Test Parameters
 
-### Screen Share test
-
-#### Parameters
+### Screen Share
 ```
 :param str: dest
     format: :<listening-port>/<endpoint>
@@ -33,6 +28,46 @@ This is by design and should be accounted for when running that test.
     format: X (in seconds)
     example: 120
 ```
+### UDP Stream
+```
+:param str: dest
+    format: "<destination-socket>"
+    example: "172.25.0.16:1234"
+:param str: file
+    format: "C:\path\to\file.extension"
+    example: "C:\Users\user\Downloads\Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp4"
+:param int: duration
+    format: X (in seconds)
+    example: 120
+```
+### Terminate Processes
+```
+:param list: services
+    format: "item1,item2,item3"
+    example: "excel,winword,outlook,chrome,msedge"
+:param int: minDelay
+    format: x (in seconds)
+    example: 20
+:param int: maxDelay
+    format: X (in seconds)
+    example: 120
+:param int: iterations
+    format: x
+    example: 10
+```
+### Key Logger
+```
+:param int: duration
+    format: X (in seconds)
+    example: 120
+```
+
+## Run a test
+**Note:**
+The keylogger test will be flagged by any running antimalware/antivirus.
+This is by design and should be accounted for when running that test.
+
+### Screen Share test
 
 #### Using script locally
 ```powershell
