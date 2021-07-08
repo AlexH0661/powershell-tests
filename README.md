@@ -5,6 +5,9 @@
 Each test uses the `init.ps1` powershell script in order to standardize logging.
 The logging server is specified here.
 
+### Misc notes
+The disk encryption module requires a GPO to be modified to enable BitLocker full disk encryption if there is no TPM present
+
 ## Ensure PSRemoting is enabled on endpoints
 ```powershell
 powershell.exe Enable-PSRemoting
