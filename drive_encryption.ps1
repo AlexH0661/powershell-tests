@@ -2,7 +2,7 @@
 # Disk encryption
 #
 
-# Checkin to C2
+# Checkin to logging server
 & "$PSScriptRoot\init.ps1" -stage disk-encryption -state starting
 
 # Check if TPM is present
