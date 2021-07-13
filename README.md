@@ -2,8 +2,10 @@
 
 ## The basics
 
-Each test uses the `init.ps1` powershell script in order to standardize logging.
-The logging server is specified here.
+Launch the `logging_server.ps1` script (doesn't need to be elevated).
+This will start a listener on port 8443 or which ever port was provided as an argument.
+Any data that is sent over a TCP connection to this port will be appended to a text file.
+The text file will be created in the same directory the script is run from.
 
 ### Misc notes
 The disk encryption module requires a GPO to be modified to enable BitLocker full disk encryption if there is no TPM present
@@ -65,12 +67,12 @@ powershell.exe Set-Item wsman:\localhost\Client\TrustedHosts -Value "172.25.0.13
     example: 120
 ```
 
-## Run a test
+## Running a test
 **Note:**
 The keylogger test will be flagged by any running antimalware/antivirus.
 This is by design and should be accounted for when running that test.
 
-### Screen Share test
+### Example run
 
 #### Using script locally
 ```powershell
@@ -79,13 +81,8 @@ powershell.exe .\vlc-screen-share.ps1  -dest ":8443/wds" -duration 10
 
 #### Using script remotely
 ```powershell
-Invoke-Command -ComputerName "172.25.0.139" -Command C:\Users\user\Desktop\vlc-screen-share.ps1 -dest ":8443/wds"
+powershell.exe .\ic-test.ps1 -test $testName
 ```
-
-or
-
-```powershell
-powershell.exe Invoke-Command -ComputerName "172.25.0.139"
-# May not be able to use arugments with this method.
-# Arguments: .\vlc-screen-share -dest "172.25.0.181" -duration 300
-```
+This will prompt for credentials to connect to a remote machine. If they are valid, it will create a scheduled task for two minutes from the time the script was invoked. This will then run the test as the logged in user's session.
+**note** at this stage, all arguments including remote host connection details are hard coded.
+On the `TODO.md` 

@@ -87,7 +87,7 @@ Switch($test)
             param($dest,$duration, $taskName, $scheduledTime)
             $scheduledDay = Get-Date -Format ("MM/dd/yyyy")
             $sc_args = "powershell.exe -windowstyle hidden -File C:\Users\user\Desktop\scripts\vlc-screen-share.ps1 -dest $dest -duration $duration -schtask $taskName"
-            schtasks.exe /create /tn $taskName /sc once /sd $scheduledDay /st $scheduledTime /ru builtin\users /tr "$sc_args" /rl highest
+            schtasks.exe /create /tn $taskName /sc once /sd $scheduledDay /st $scheduledTime /ru builtin\users /tr "$sc_args"
         }
         break
     }
@@ -144,5 +144,8 @@ else
 {
     write-host("A test needs to be defined") -ForegroundColor Red
     write-host("Available tests are:")
-    write-host("- screen-share")
+    write-host("* screen-share")
+	write-host("* key-loger")
+	write-host("* terminate-processes")
+	write-host("* udp-stream")
 }

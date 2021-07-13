@@ -1,5 +1,5 @@
 ﻿#
-# init.ps1 is a common Powershell script that is used to gather initial details
+# init.ps1 This has been turned into a function
 #
 
 function Send-Message($stage="Init", $state="Unknown", $duration="N/A", $comment="N/A")

@@ -3,10 +3,14 @@
 #
 
 # Define arguments
-param($dest="127.0.0.1:1234", $file="C:\Users\user\Downloads\Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp4", $duration=120)
+param($dest="127.0.0.1:1234", $file="C:\Users\user\Downloads\Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp4", $duration=120, $taskName)
 write-host("Targeting: {0}" -f $dest)
 write-host("Using file: {0}" -f $file)
 write-host("For duration: {0}" -f $duration)
+if ($taskName)
+{
+	write-host("Scheduled Task name: {0}" -f $taskName)
+}
 
 function Send-Message($stage="Init", $state="Unknown", $duration="N/A", $comment="N/A")
 {
@@ -95,10 +99,6 @@ if ($childProcess)
     } else
     {
         write-host($stopProcess)
-    }
-    if ($taskName -ne $null)
-    {
-        Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     }
 } else
 {

@@ -6,8 +6,10 @@
 param($dest=":8443/stream", $duration=120, $taskName)
 write-host("Listening at: {0}" -f $dest)
 write-host("For duration: {0}" -f $duration)
-write-host("Scheduled Task name: {0}" -f $taskName)
-
+if ($taskName)
+{
+	write-host("Scheduled Task name: {0}" -f $taskName)
+}
 function Send-Message($stage="Init", $state="Unknown", $duration="N/A", $comment="N/A")
 {
 	# Define session variables
@@ -95,10 +97,6 @@ if ($childProcess)
     } else
     {
         write-host($stopProcess)
-    }
-    if ($taskName -ne $null)
-    {
-        Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     }
 } else
 {
